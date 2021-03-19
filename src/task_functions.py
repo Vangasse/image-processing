@@ -2,10 +2,6 @@
 import os
 import cv2
 import matplotlib.pyplot as plt
-from imutils import paths
-import numpy as np
-import argparse
-import imutils
 
 path = "../img/"
 
@@ -49,44 +45,39 @@ def img_union_gray(I_a, I_b):
     return img
 
 
-# %% Stitching
-def img_stitching(images):
-
-    print("[INFO] stitching images...")
-    stitcher = cv2.createStitcher() if imutils.is_cv3() else cv2.Stitcher_create()
-    (status, stitched) = stitcher.stitch(images)
-
-    # if the status is '0', then OpenCV successfully performed image
-    # stitching
-    if status == 0:
-        # write the output stitched image to disk
-        cv2.imwrite("../img/stitch.jpg", stitched)
-        # display the output stitched image to our screen
-        #cv2.imshow("Stitched", stitched)
-        #cv2.waitKey(0)
-    # otherwise the stitching failed, likely due to not enough keypoints)
-    # being detected
-    else:
-        print("[INFO] image stitching failed ({})".format(status))
-
-
-# %%
+# %% Load images
 I_a = cv2.imread(os.path.join(path,"coins23.png"), cv2.IMREAD_COLOR)
 I_b = cv2.imread(os.path.join(path,"coins234.png"), cv2.IMREAD_COLOR)
 
-# plt.imshow(img_diff(I_a, I_b))
-# plt.imshow(img_and(I_a, I_b))
-# plt.imshow(img_or(I_a, I_b))
-# plt.imshow(img_not(I_a))
-# plt.imshow(img_xor(I_a, I_b))
-plt.imshow(img_union_gray(I_a, I_b), 'gray')
+# %% Image Difference
+plt.subplot("131");plt.title("I_a");plt.imshow(I_a)
+plt.subplot("132");plt.title("I_b");plt.imshow(I_b)
+plt.subplot("133");plt.title("Difference");plt.imshow(img_diff(I_a, I_b))
+plt.show()
 
-# %%
-images = []
-images.append(cv2.imread(os.path.join(path,"ic1.jpg"), cv2.IMREAD_COLOR))
-images.append(cv2.imread(os.path.join(path,"ic2.jpg"), cv2.IMREAD_COLOR))
-images.append(cv2.imread(os.path.join(path,"ic3.jpg"), cv2.IMREAD_COLOR))
-images.append(cv2.imread(os.path.join(path,"ic4.jpg"), cv2.IMREAD_COLOR))
+# %% AND
+plt.subplot("131");plt.title("I_a");plt.imshow(I_a)
+plt.subplot("132");plt.title("I_b");plt.imshow(I_b)
+plt.subplot("133");plt.title("AND");plt.imshow(img_and(I_a, I_b))
+plt.show()
+# %% OR
+plt.subplot("131");plt.title("I_a");plt.imshow(I_a)
+plt.subplot("132");plt.title("I_b");plt.imshow(I_b)
+plt.subplot("133");plt.title("OR");plt.imshow(img_or(I_a, I_b))
+plt.show()
+# %% NOT
+plt.subplot("121");plt.title("I_a");plt.imshow(I_a)
+plt.subplot("122");plt.title("NOT");plt.imshow(img_not(I_a))
+plt.show()
+# %% XOR
+plt.subplot("131");plt.title("I_a");plt.imshow(I_a)
+plt.subplot("132");plt.title("I_b");plt.imshow(I_b)
+plt.subplot("133");plt.title("XOR");plt.imshow(img_xor(I_a, I_b))
+plt.show()
 
-img_stitching(images)
+# %% Image Union
+plt.subplot("131");plt.title("I_a");plt.imshow(I_a)
+plt.subplot("132");plt.title("I_b");plt.imshow(I_b)
+plt.subplot("133");plt.title("Union");plt.imshow(img_union_gray(I_a, I_b), 'gray')
+plt.show()
 # %%
